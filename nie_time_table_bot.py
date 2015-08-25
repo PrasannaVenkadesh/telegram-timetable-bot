@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-__author__ = "Prasann Venkadesh <prashere@tuta.io>"
+__author__ = "Prasanna Venkadesh <prashere@tuta.io>"
 __license__ = "GPLV3"
 
 """
