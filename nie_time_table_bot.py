@@ -40,8 +40,6 @@ if __name__ == "__main__":
     data_file_path = os.environ.get('HOME') + '/.putimetable_bot'
     
     # initiating the bot instance with it's settings
-    bot = telegram.Bot(token=bot_settings.get('token'))
-    
     # api call to telegram that gets the messages to this script
     messages_to_bot = bot.getUpdates()
     
@@ -65,41 +63,41 @@ if __name__ == "__main__":
                 today = datetime.today().weekday()
                 day = -1
     
+                if message_text.startswith('/'):
+		    # supported commands
+                    if message_text == "/today":
+                        day = today
+                    elif message_text == "/tomorrow" and today == 6:
+                        day = 0
+		    elif message_text == "/tomorrow" and today != 6:
+		        day = today + 1
+                    else:
+                        message = ":no_mouth: I don't understand your command. Try /today or /tomorrow"
+                        bot.sendMessage(chat_id=chat_id, reply_to_message_id=current_message_id, text=message)
+                        break;
 
-		# supported commands            
-                if message_text == "/today":
-                    day = today
-                elif message_text == "/tomorrow" and today == 6:
-                    day = 0
-		elif message_text == "/tomorrow" and today != 6:
-		    day = today + 1
-                else:
-                    message = "Well I am a kid. You people have to teach me. Demand source code from @prashere and train me. For now I can only reply to /today & /tomorrow commands."
-                    bot.sendMessage(chat_id=chat_id, reply_to_message_id=current_message_id, text=message)
-                    break;
-
-		# the default message for weekdays.
-                message = "It's <DAYHERE> and this is our schedule for the day.\n"
+		    # the default message for weekdays.
+                    message = "It's <DAYHERE> and this is our schedule for the day.\n"
                     
-                if day == 0:
-                    message = message.replace('<DAYHERE>', "Monday")
-                elif day == 1:
-                    message = message.replace('<DAYHERE>', "Tuesday")
-                elif day == 2:
-                    message = message.replace('<DAYHERE>', "Wednesday")
-                elif day == 3:
-                    message = message.replace('<DAYHERE>', "Thursday")
-                elif day == 4:
-                    message = message.replace('<DAYHERE>', "Friday")
-                elif day == 5 or day == 6:
-                    message = "It's Weekend. Enjoy the day!"
-                elif day == -1 or day > 6:
-                    break;
+                    if day == 0:
+                        message = message.replace('<DAYHERE>', "Monday")
+                    elif day == 1:
+                        message = message.replace('<DAYHERE>', "Tuesday")
+                    elif day == 2:
+                        message = message.replace('<DAYHERE>', "Wednesday")
+                    elif day == 3:
+                        message = message.replace('<DAYHERE>', "Thursday")
+                    elif day == 4:
+                        message = message.replace('<DAYHERE>', "Friday")
+                    elif day == 5 or day == 6:
+                        message = "It's Weekend. Enjoy the day!"
+                    elif day == -1 or day > 6:
+                        break;
                 
-		if message.find('Weekend') is not -1:
-		    pass
-		else:
-                    message = message + time_table.get(day)
+		    if message.find('Weekend') is not -1:
+		        pass
+		    else:
+                        message = message + time_table.get(day)
                 
-		# the bot sends the reply to the user / group that requested
-		bot.sendMessage(chat_id=chat_id, reply_to_message_id=current_message_id, text=message)
+		    # the bot sends the reply to the user / group that requested
+		    bot.sendMessage(chat_id=chat_id, reply_to_message_id=current_message_id, text=message)
