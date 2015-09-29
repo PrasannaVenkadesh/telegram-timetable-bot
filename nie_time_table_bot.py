@@ -22,9 +22,9 @@ import telegram
 from datetime import datetime
 
 # value / data specific for this progam
-
 # Bot token acquired from Telegram @botfather
 # retrieving from env variable
+
 bot_settings = {"token": os.environ.get('TIMETABLE_BOT')}
 
 # the timetable specific to our class
@@ -40,6 +40,8 @@ if __name__ == "__main__":
     data_file_path = os.environ.get('HOME') + '/.putimetable_bot'
     
     # initiating the bot instance with it's settings
+    bot = telegram.Bot(token=bot_settings.get('token'))
+
     # api call to telegram that gets the messages to this script
     messages_to_bot = bot.getUpdates()
     
